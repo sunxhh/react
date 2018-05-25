@@ -1,3 +1,7 @@
+import DOMRenderer from './DOMRenderer';
+import ReactWork from './reactWork';
+import ReactBatch from './reactBatch';
+
 // hydrate 是否是服务端
 // container 根元素
 function ReactRoot(container: Container, isAsync: boolean, hydrate: boolean) {
@@ -5,6 +9,7 @@ function ReactRoot(container: Container, isAsync: boolean, hydrate: boolean) {
   this._internalRoot = root;
 }
 
+// 初始生成
 ReactRoot.prototype.render = function(
   children: ReactNodeList,
   callback: ? () => mixed,
@@ -24,9 +29,7 @@ ReactRoot.prototype.unmount = function(callback: ? () => mixed): Work {
   const root = this._internalRoot;
   const work = new ReactWork();
   callback = callback === undefined ? null : callback;
-  if (__DEV__) {
-    warnOnInvalidCallback(callback, 'render');
-  }
+  
   if (callback !== null) {
     work.then(callback);
   }
@@ -42,9 +45,7 @@ ReactRoot.prototype.legacy_renderSubtreeIntoContainer = function(
   const root = this._internalRoot;
   const work = new ReactWork();
   callback = callback === undefined ? null : callback;
-  if (__DEV__) {
-    warnOnInvalidCallback(callback, 'render');
-  }
+  
   if (callback !== null) {
     work.then(callback);
   }
